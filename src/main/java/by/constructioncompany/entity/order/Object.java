@@ -1,6 +1,5 @@
-package by.constructioncompany.entity.person;
+package by.constructioncompany.entity.order;
 
-import by.constructioncompany.entity.person.Person;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,9 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends Person {
+public class Object {
 
-    private int discount;
+    private int id;
+    private double square;
+    private ObjectType objectType;
 }

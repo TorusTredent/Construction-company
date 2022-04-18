@@ -1,4 +1,5 @@
-package by.constructioncompany.entity.person;
+package by.constructioncompany.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,15 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Person {
+@Data
+public class SaveUserDto {
 
-    private int id;
-    private String password;
     private String firstName;
     private String lastName;
+    private String password;
     private String phoneNumber;
     private String email;
 }

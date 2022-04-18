@@ -1,4 +1,4 @@
-package by.constructioncompany.entity.person;
+package by.constructioncompany.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Person {
+public class UpdateUserDto {
 
-    private int id;
-    private String password;
     private String firstName;
     private String lastName;
+    private String password;
     private String phoneNumber;
     private String email;
 }
