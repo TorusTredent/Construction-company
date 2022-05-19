@@ -1,0 +1,75 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:if="${session.authUser == null && session.authEmployee == null}"
+               href="/user/authorization">Construction_Company</a>
+            <a class="navbar-brand" th:if="${session.authUser != null && session.authEmployee == null}"
+               href="/user/history">Construction_Company</a>
+            <a class="navbar-brand"
+               th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+               href="/order/all">Construction_Company</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 175px" href="/order/all">Orders</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/user/all">Users</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/brigade/all">Brigades</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/employee/all">Employees</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/object/all">Objects</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/stock/all">Stock</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/supplier/all">Suppliers</a>
+                <a th:if="${session.authEmployee != null && session.authEmployee.employeeRole == session.authEmployee.employeeRole.DIRECTOR}"
+                   class="navbar-brand" style="margin-left: 5px" href="/order/iosu/chooseQuery">Query</a>
+
+                <a th:if="${session.authEmployee != null}"
+                   class="navbar-brand" style="margin-left: 210px" href="/employee/profile">Profile</a>
+                <a th:if="${session.authEmployee != null}"
+                   class="navbar-brand" style="margin-left: 5px" href="/user/logout">LogOut</a>
+                <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
+                    <a th:if="${session.authUser != null}"
+                       class="navbar-brand" style="margin-left: 1100px" href="/user/profile">Profile</a>
+                    <a th:if="${session.authUser != null}"
+                       class="navbar-brand" style="margin-left: 5px" href="/user/logout">LogOut</a>
+                    <ul class="navbar-nav mb-2 mb-lg-0 d-flex">
+                        <li class="nav-item" th:if="${session.authUser==null && session.authEmployee == null}">
+                            <a class="nav-link active" aria-current="page" style="margin-left: 1150px"
+                               href="/user/authorization"><span
+                                    class="bi bi-person-circle"></span> Sign in</a>
+                        </li>
+                        <div class="dropdown" th:if="${session.authUser!=null}">
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink2">
+                                <li><a th:if="${session.authUser != null}" class="dropdown-item"
+                                       href="/user/profile"> Profile</a></li>
+                                <li><a th:if="${session.authEmployee != null}" class="dropdown-item"
+                                       href="/employee/profile"> Profile</a></li>
+                                <li><a class="dropdown-item" href="/user/logout"> LogOut</a></li>
+                            </ul>
+                        </div>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+            integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+            integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+            crossorigin="anonymous"></script>
+</div>

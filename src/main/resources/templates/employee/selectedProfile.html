@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <h1 class="page-header" th:text="'Employee profile - ' + ${updateEmployee.id}"></h1>
+    <div class="row">
+        <div class="col-md-12 col-sm-6 col-xs-12 personal-info">
+            <form class="form-horizontal" action="#" th:action="@{/employee/profile}" th:object="${updateEmployee}"
+                  th:method="post">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Email:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" hidden th:field="*{id}" th:value="*{id}" type="text">
+                        <input th:readonly="${session.authEmployee == null}" class="form-control" th:field="*{email}" th:value="*{email}" type="email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">First Name:</label>
+                    <div class="col-lg-8">
+                        <input th:readonly="${session.authEmployee == null}"  class="form-control" th:field="*{firstName}" th:value="*{firstName}"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Last Name:</label>
+                    <div class="col-lg-8">
+                        <input th:readonly="${session.authEmployee == null}"  class="form-control" th:field="*{lastName}" th:value="*{lastName}" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Phone number:</label>
+                    <div class="col-lg-8">
+                        <input th:readonly="${session.authEmployee == null}"  class="form-control" th:field="*{phoneNumber}" th:value="*{phoneNumber}"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Speciality:</label>
+                    <div class="col-lg-8">
+                        <input th:readonly="${session.authEmployee == null}"  class="form-control" th:field="*{speciality}" th:value="*{speciality}"
+                               type="text">
+                    </div>
+                </div>
+                <div th:hidden="${session.authEmployee == null}"  class="form-group">
+
+                        <div class=" col-lg-3 control-label">
+                            <a th:hidden="${session.authEmployee == null}"  th:href="@{/employee/all}" style="width: 100px; margin-top: 30px"
+                               class="btn btn-primary">Back</a>
+                            <input th:hidden="${session.authEmployee == null}"  style="width: 150px; margin-top: 30px; margin-left: 20px" class="btn btn-primary" value="Save Changes"
+                                   type="submit">
+                        </div>
+
+                </div>
+                <span></span>
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

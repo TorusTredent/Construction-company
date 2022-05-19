@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <div class="row mt-3">
+
+        <div class="col-md-6">
+            <h1 class="page-header">Order</h1>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material:${materials}">
+                    <td data-th="Name" class="col-2 col-sm-2" th:text="${material.name}"></td>
+                    <td data-th="Price" class="сol-1 col-sx-1" style="text-align: center"
+                        th:text="${material.unitPrice}"></td>
+                    <td data-th="Date" class="сol-2 col-sm-1" th:text="${material.purchaseDate}"></td>
+                    <td data-th="Supplier" class="сol-1 col-md-1" style="max-width: 90px; text-align: center"
+                        th:text="${material.supplier.getId()}"></td>
+                    <td data-th="Count" class="сol-2" style="max-width: 250px">
+                        <div class="row">
+                            <div class="d-flex align-items-center" style="max-width: 125px">
+                                <form action="#"
+                                      th:action="@{/order/material/changeCount/{orderId}(orderId=${id})}"
+                                      th:method="post">
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" min="1" style="width:100px" th:name="count"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.countOfMaterials}">
+                                        <input type="number" hidden th:name="materialId"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.id}">
+                                        <input type="text" hidden th:name="page"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="'materials/add'">
+                                        <button style="margin-left: 3px"
+                                                class="btn btn-outline-success btn-md mb-2">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                                <form action="#"
+                                      th:action="@{/order/material/delete(orderId=${id})}"
+                                      th:method="post">
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" hidden min="1" style="width:80px" th:name="count"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.countOfMaterials}">
+                                        <input type="number" hidden th:name="materialId"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.id}">
+                                        <input type="text" hidden th:name="page"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="'materials/add'">
+                                        <button style="margin-left: 2px"
+                                                class="btn btn-outline-danger btn-md mb-2">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h1 class="page-header">Stock</h1>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Cnt Stock</th>
+                    <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material:${stockMaterials}">
+                    <td data-th="Name" class="col-2 col-sm-1" th:text="${material.name}"></td>
+                    <td data-th="Price" class="col-1 col-sm-1" style="text-align: center;" th:text="${material.unitPrice}"></td>
+                    <td data-th="Date" class="col-2 col-sm-2" th:text="${material.purchaseDate}"></td>
+                    <td data-th="Supplier" class="col-1 col-sm-1" style="text-align: center;" th:text="${material.supplier.getId()}"></td>
+                    <td data-th="Cnt Stock" class="col-1 col-sm-1" style="max-width: 300px">
+                        <div class="d-flex align-items-center">
+                            <input type="text" min="1" readonly style="width:100px" th:name="count"
+                                   class="form-control form-control-lg text-left"
+                                   th:value="${material.countOfMaterials}">
+                        </div>
+                    </td>
+                    <td data-th="Count" style="max-width: 300px">
+                        <div class="row">
+                            <div class="d-flex align-items-center" style="max-width: 125px">
+                                <form action="#"
+                                      th:action="@{/order/material/add/changeStockCount/{orderId}(orderId=${id})}"
+                                      th:method="post">
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" min="0" th:max="${material.countOfMaterials}" style="width:100px" th:name="count"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.countOfMaterials}">
+                                        <input type="number" hidden th:name="materialId"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.id}">
+                                        <input type="text" hidden th:name="page"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="'material/add'">
+                                        <button style="margin-left: 20px"
+                                                class="btn btn-outline-primary btn-md mb-2">
+                                            <i class="bi bi-plus" style="height: 10px; width: 10px"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

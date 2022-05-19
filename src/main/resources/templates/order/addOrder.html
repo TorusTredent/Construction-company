@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" th:href="@{userRegistration.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-7">
+            <div class="card px-5 py-4" id="form1">
+                <div class="form-data" v-if="!submitted">
+                    <div class="text-center mb-4">
+                        <h4>Registration</h4>
+                    </div>
+                    <p th:if="${message != null}" class="alert alert-info alert-danger" th:utext="${message}"
+                       th:type="text"></p>
+                    <form action="#" th:action="@{/order/add}" th:object="${saveOrder}" th:method="post">
+                        <div class="forms-inputs mb-4"><span>Address</span>
+                            <input class="form-control" th:field="*{address}" type="text">
+                        </div>
+                        <div class="form-text">
+                            <p th:if="${#fields.hasErrors('address')}" style="color: red" th:errors="*{address}"></p>
+                        </div>
+
+                        <div class="forms-inputs mb-4">
+                            <label class="col-lg-5 control-label"
+                                   for="exampleFormControlSelect3">Users emails: </label>
+                            <div class="col-lg-8">
+                                <select th:name="email" th:value="*{email}" class="form-control"
+                                        style="max-width: 250px"
+                                        id="exampleFormControlSelect3">
+                                    <option th:each="user:${users}"
+                                            th:text="${user.getEmail()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="forms-inputs mb-4">
+                            <label class="col-lg-5 control-label"
+                                   for="exampleFormControlSelect1">Brigades: </label>
+                            <div class="col-lg-8">
+                                <select th:name="brigadeId" th:value="*{brigadeId}" class="form-control"
+                                        style="max-width: 125px"
+                                        id="exampleFormControlSelect1">
+                                    <option th:each="brigades:${brigades}" th:text="${brigades}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-text">
+                            <p th:if="${#fields.hasErrors('brigadeId')}" style="color: red"
+                               th:errors="*{brigadeId}"></p>
+                        </div>
+                        <div class="forms-inputs mb-4">
+                            <label class="col-lg-5 control-label"
+                                   for="exampleFormControlSelect2">Construct_object: </label>
+                            <div class="col-lg-8">
+                                <select th:name="constructObject" th:value="*{constructObject}" class="form-control"
+                                        style="max-width: 175px"
+                                        id="exampleFormControlSelect2">
+                                    <option th:each="obj:${objects}"
+                                            th:text="${obj.constructObjectType + '-' + obj.square}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-text">
+                            <p th:if="${#fields.hasErrors('constructObject')}" style="color: red"
+                               th:errors="*{constructObject}"></p>
+                        </div>
+                        <div class="forms-inputs mb-4"><span>Order status:</span>
+                            <input class="form-control" th:name="orderStatus" readonly
+                                   th:value="${saveOrder.orderStatus.FORMED}" type="text">
+                        </div>
+                        <div class="form-text">
+                            <p th:if="${#fields.hasErrors('email')}" style="color: red" th:errors="*{email}"></p>
+                        </div>
+                        <div class="forms-inputs mb-4"><span>Start date: </span>
+                            <input class="form-control" th:field="*{beginningOfWork}" th:type="date">
+                        </div>
+                        <div class="form-text">
+                            <p th:if="${#fields.hasErrors('beginningOfWork')}" style="color: red"
+                               th:errors="*{beginningOfWork}"></p>
+                        </div>
+                        <div class="forms-inputs mb-4"><span>End date: </span>
+                            <input class="form-control" th:field="*{endOfWork}" th:type="date">
+                        </div>
+                        <div class="form-text">
+                            <p th:if="${#fields.hasErrors('endOfWork')}" style="color: red"
+                               th:errors="*{endOfWork}"></p>
+                        </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary" style="text-align: center; width: 100%">
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

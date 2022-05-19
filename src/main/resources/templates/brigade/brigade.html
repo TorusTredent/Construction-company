@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <div class="row mt-3">
+        <h1 class="page-header">
+            <div style="margin-left: 500px" th:text="'Brigade -' + ${brigade.getId()}">
+            </div>
+        </h1>
+        <div  th:hidden="${session.authEmployee == null}" class="col-md-5">
+            <h1 class="page-header">Brigade orders:</h1>
+            <table class="table" th:if="${brigadeOrders != null}">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" class="сol-1 col-sm-1">Number</th>
+                    <th scope="col" class="сol-2 col-sm-1">Address</th>
+                    <th scope="col" class="сol-1 col-sm-1">BeginDate</th>
+                    <th scope="col" class="сol-1 col-sm-1">EndDate</th>
+                    <th scope="col" class="сol-1 col-sm-1">BrigadeNumber</th>
+                    <th scope="col" class="сol-1 col-sm-1">User</th>
+                    <th scope="col" class="сol-1 col-sm-1">ConstructObject</th>
+                    <th scope="col" class="сol-1 col-sm-1">Status</th>
+                </tr>
+                </thead>
+                <tbody th:each="order:${brigadeOrders}">
+                <tr>
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.address}"></td>
+                    <td th:text="${order.beginningOfWork}"></td>
+                    <td th:text="${order.endOfWork}"></td>
+                    <td>
+                        <a th:href="@{/brigade/{id}(id = ${order.brigade.getId()})}"
+                           th:text="${order.brigade.getId()}"></a>
+                    </td>
+                    <td>
+                        <a th:href="@{/user/profile/{id}(id = ${order.user.getId()})}"
+                           th:text="${order.user.getEmail()}"></a>
+                    </td>
+                    <td>
+                        <a th:href="@{/constructObject/{id}(id = ${order.constructObject.getId()})}"
+                           th:text="${order.constructObject.getId()}"></a>
+                    </td>
+                    <td th:text="${order.orderStatus}"></td>
+                    <td>
+                        <form action="#" th:action="@{/order/{id}(id = ${order.getId()})}" th:method="get">
+                            <button di class="btn btn-outline-secondary" role="button"
+                                    aria-pressed="true">Open
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h1 class="page-header">Brigade employees</h1>
+            <table class="table" th:if="${brigade.employees != null}">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">First_Name</th>
+                    <th scope="col">Last_Name</th>
+                    <th scope="col">Phone_Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Speciality</th>
+                </tr>
+                </thead>
+                <tbody th:each="employee:${brigade.employees}">
+                <tr>
+                    <td th:text="${employee.id}"></td>
+                    <td th:text="${employee.firstName}"></td>
+                    <td th:text="${employee.lastName}"></td>
+                    <td th:text="${employee.phoneNumber}"></td>
+                    <td th:text="${employee.email}"></td>
+                    <td th:text="${employee.speciality}"></td>
+                    <td>
+                        <form action="#" th:action="@{/employee/selectedProfile/{id}(id = ${employee.getId()})}"
+                              th:method="get">
+                            <button class="btn btn-outline-secondary" role="button"
+                                    aria-pressed="true">Open
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="#" th:action="@{/brigade/employee/delete/}"
+                              th:method="post">
+                            <input type="number" hidden th:name="brigadeId"
+                                   class="form-control form-control-lg text-left"
+                                   th:value="${brigade.id}">
+                            <input type="number" hidden th:name="id"
+                                   class="form-control form-control-lg text-left"
+                                   th:value="${employee.getId()}">
+                            <button  th:hidden="${session.authEmployee == null}" class="btn btn-outline-danger" role="button"
+                                    aria-pressed="true">Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div  th:hidden="${session.authEmployee == null}" class="row mt-3">
+        <div class="col-md-6">
+            <h1 class="page-header">Free employee</h1>
+            <table class="table" th:if="${employeesWithoutBrigade != null}">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">First_Name</th>
+                    <th scope="col">Last_Name</th>
+                    <th scope="col">Phone_Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Speciality</th>
+                </tr>
+                </thead>
+                <tbody th:each="employee:${employeesWithoutBrigade}">
+                <tr>
+                    <td th:text="${employee.id}"></td>
+                    <td th:text="${employee.firstName}"></td>
+                    <td th:text="${employee.lastName}"></td>
+                    <td th:text="${employee.phoneNumber}"></td>
+                    <td th:text="${employee.email}"></td>
+                    <td th:text="${employee.speciality}"></td>
+                    <td>
+                        <form action="#" th:action="@{/employee/selectedProfile/{id}(id = ${employee.getId()})}"
+                              th:method="get">
+                            <button  th:hidden="${session.authEmployee == null}" class="btn btn-outline-secondary" role="button"
+                                    aria-pressed="true">Open
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="#"
+                              th:action="@{/brigade/employee/add/}"
+                              th:method="post">
+                            <div class="d-flex align-items-center">
+                                <input type="number" hidden th:name="brigadeId"
+                                       class="form-control form-control-lg text-left"
+                                       th:value="${brigade.id}">
+                                <input type="number" hidden th:name="id"
+                                       class="form-control form-control-lg text-left"
+                                       th:value="${employee.getId()}">
+                                <button style="margin-left: 20px"
+                                        class="btn btn-outline-primary btn-md mb-2">
+                                    <i class="bi bi-plus" style="height: 10px; width: 10px"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

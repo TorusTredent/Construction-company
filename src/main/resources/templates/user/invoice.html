@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Order</title>
+
+    <style>
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .pr {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+
+        @media print {
+            #printPageButton {
+                display: none;
+            }
+        }
+
+        /** RTL **/
+        .invoice-box.rtl table {
+            text-align: right;
+        }
+
+        .invoice-box.rtl table tr td:nth-child(2) {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="invoice-box" style="padding-top: 60px;">
+    <h1 class="page-header">Order</h1>
+    <div class="row mt-3">
+        <div class="col-md-5">
+            <label class="col-lg-5 control-label" style="margin-top: 10px">User email:</label>
+            <input class="form-control" readonly
+
+                   th:value="${order.user.getEmail()}"
+                   type="text">
+            <label class="col-lg-5 control-label" style="margin-top: 10px; margin-left: 110px">Construct object:</label>
+            <input class="form-control" readonly
+
+                   th:value="${order.constructObject.getConstructObjectType() + ' ' + order.getConstructObject().getSquare()}"
+                   type="text">
+        </div>
+        <div class="col-md-5" style="margin-top: 20px">
+            <label class="col-lg-5 control-label" style="margin-top: 10px">Address:</label>
+            <input class="form-control" readonly
+
+                   th:value="${order.address}"
+                   type="text">
+            <label class="col-lg-5 control-label" style="margin-top: 10px;margin-left: 130px">Brigade:</label>
+            <input class="form-control" readonly
+
+                   th:value="${order.brigade.getId()}"
+                   type="text">
+        </div>
+        <div class="col-md-5" style="margin-top: 20px">
+            <label class="col-lg-5 control-label" style="margin-top: 10px">Start date:</label>
+            <input class="form-control" readonly
+
+                   th:value="${order.beginningOfWork}"
+                   type="text">
+
+            <label class="col-lg-5 control-label" style="margin-top: 10px; margin-left: 120px">End date:</label>
+            <input class="form-control" readonly
+
+                   th:value="${order.endOfWork}"
+                   type="text">
+        </div>
+    </div>
+    <div class="row mt-3" style="margin-top: 40px">
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material:${order.materials}">
+                    <td data-th="Name" th:text="${material.name}"></td>
+                    <td data-th="Price" style="text-align: left;" th:text="${material.unitPrice}"></td>
+                    <td data-th="Date" th:text="${material.purchaseDate}"></td>
+                    <td data-th="Supplier" th:text="${material.supplier.getName()}"></td>
+                    <td data-th="Count" th:text="${material.getCountOfMaterials()}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <h3 class="col-lg-5 control-label" style="margin-top: 40px">Cost:
+            <input class="form-control" readonly
+                   th:value="${order.cost}"
+                   type="text"></h3>
+
+    </div>
+    <h3 style="text-align: center">Thank you for the purchase</h3>
+    <button style="align-content: center" id="printPageButton" class="btn btn-success float-start"
+            onClick="window.print();return false">
+        Print this page
+    </button>
+</div>
+</body>
+</html>

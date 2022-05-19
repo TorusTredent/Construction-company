@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Itogovy</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center"> Materials
+
+                    <form action="#" th:action="@{/order/iosu/itogovy}" th:method="post">
+                            <div class="col-sm-12">
+                                <label class="control-label" style="margin-top: 10px" for="datepicker-start">Choose
+                                    Date</label>
+                                <input style="max-width: 250px; margin-left: 510px" type="date" id="datepicker-start"
+                                       class="form-control"
+                                       name="beginningOfWork" th:name="date" th:value="date">
+                            </div>
+                            <button class="btn btn-outline-info" role="button"
+                                    aria-pressed="true">Choose dates
+                            </button>
+                        <div >
+                            <label class="control-label" style="margin-top: 10px" th:text="${date.getYear() + '-' + date.getMonthValue()}"></label>
+                        </div>
+                    </form>
+                </h3>
+                <table class="table" th:if="${itogovy != null}">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Material Name</th>
+                        <th scope="col">Suppliers Name</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Cost</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="it:${itogovy}">
+                    <tr>
+                        <td th:text="${it.id}"></td>
+                        <td th:text="${it.stockName}"></td>
+                        <td>
+                            <a th:href="@{/supplier/selectedSupplier/{id}(id=${it.supplier.id})}"
+                               th:text="${it.supplierName}"></a>
+                        </td>
+                        <td th:text="${it.rating}"></td>
+                        <td th:text="${it.cost}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

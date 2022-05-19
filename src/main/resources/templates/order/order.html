@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        $('.datepicker').datepicker({
+            inline: true
+        });
+    </script>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <h1 class="page-header" th:text="${'Order - ' + order.cost}"></h1>
+    <div class="row mt-3">
+        <div class="col-md-3 ">
+            <form class="form-horizontal" action="#" th:action="@{/order/update}" th:object="${order}"
+                  th:method="post">
+                <p th:if="${messageComplete == true}" class="alert alert-info alert-dismissible">Order data has been
+                    update</p>
+                <p th:if="${messageComplete == false}" class="alert alert-info alert-dismissible">Order data hasn't been
+                    update</p>
+                <p th:if="${materialNotFound == true}" class="alert alert-info alert-dismissible">Material not found
+                <p th:if="${thisAmountOfMaterialIsOutOfStock == true}" class="alert alert-info alert-dismissible">This
+                    amount of material is out of stock
+                <p th:if="${materialHasNotBeenRemoved == true}" class="alert alert-info alert-dismissible">Material has
+                    not been removed
+
+                <div class="form-group">
+                    <label class="col-lg-5 control-label" style="margin-top: 10px">User email:</label>
+                    <div class="col-lg-8">
+                        <input hidden th:field="*{id}" class="form-control" readonly
+                               style=" max-width: 250px;  width: 250px"
+                               th:value="${order.id}"
+                               type="text">
+                        <input th:field="*{user.id}" class="form-control" hidden readonly
+                               style=" max-width: 250px;  width: 250px"
+                               th:value="${order.user.getId()}"
+                               type="text">
+                        <input th:field="*{user.email}" class="form-control" readonly
+                               style=" max-width: 250px;  width: 250px"
+                               th:value="${order.user.getEmail()}"
+                               type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-5 control-label" style="margin-top: 10px">Address:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" th:readonly="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:field="*{address}" style="max-width: 250px; width: 250px;"
+                               th:value="*{address}"
+                               type="text">
+                    </div>
+                    <div class="form-text">
+                        <p th:if="${#fields.hasErrors('address')}" style="color: red" th:errors="*{address}"></p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-6 control-label" style="margin-top: 10px" for="exampleFormControlSelect3">Status: </label>
+                    <div class="col-lg-8">
+                        <select th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:name="orderStatus" th:value="*{orderStatus}"
+                                style=" max-width: 250px; width: 250px"
+                                class="form-control" id="exampleFormControlSelect3">
+                            <option  th:text="${order.orderStatus}"></option>
+                            <option  th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:each="status:${statuses}"
+                                    th:if="${status != order.orderStatus}"
+                                    th:text="${status}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-6 control-label" style="margin-top: 10px" for="exampleFormControlSelect2">Construct
+                        object: </label>
+                    <div class="col-lg-8">
+                        <select  th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:name="constructSelected" th:value="*{constructObject}"
+                                style=" max-width: 250px; width: 250px" class="form-control"
+                                id="exampleFormControlSelect2">
+
+                            <option  th:text="${order.constructObject.getConstructObjectType() + '-' + order.constructObject.getSquare()}"></option>
+                            <option  th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:each="construct:${constructObjects}"
+                                    th:if="${construct.getConstructObjectType() != order.getConstructObject().getConstructObjectType() &&
+                                construct.getSquare() != order.getConstructObject().getSquare()}"
+                                    th:text="${construct.getConstructObjectType() + '-' + construct.getSquare()}"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-5 control-label" style="margin-top: 10px" for="exampleFormControlSelect1">Brigade: </label>
+                    <div class="col-lg-8">
+                        <select  th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:name="brigadeId" th:value="*{brigade}" class="form-control"
+                                style="max-width: 125px"
+                                id="exampleFormControlSelect1">
+                            <option th:text="${order.brigade.getId()}"></option>
+                            <option  th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" th:each="brigade:${brigadesIds}"
+                                    th:if="${brigadesIds != order.brigade.getId()}" th:text="${brigade}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 10px; max-width: 175px">
+                    <div class="col-sm-12">
+                        <label class="control-label" for="datepicker-start">Start Date</label>
+                        <input th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || order.orderStatus.IN_PROGRESS == order.orderStatus || session.authUser != null}" type="date" id="datepicker-start" class="form-control"
+                               name="beginningOfWork" th:field="*{beginningOfWork}">
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="control-label" for="datepicker-end">End Date</label>
+                        <input th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" type="date" id="datepicker-end" class="form-control"
+                               name="endOfWord" th:field="*{endOfWork}">
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="d-flex align-items-center">
+                            <input th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" class="btn btn-primary" style="margin-top: 30px; min-width: 130px; height: 38px;"
+                                   value="Save Changes" type="submit">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <a class="btn btn-outline-info" th:hidden="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}"
+               style="min-width: 127px; height: 38px; margin-left: 15px;"
+               th:href="@{/order/material/add/{id}(id=${order.id})}" role="button">Add material</a>
+            <a class="btn btn-outline-info"
+               style="min-width: 127px; height: 38px; margin-left: 15px;"
+               th:href="@{/order/print/{id}(id=${order.id})}" role="button">Print</a>
+        </div>
+
+        <div class="col-md-9">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Supplier</th>
+                    <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="material:${order.materials}">
+                    <td data-th="Name" th:text="${material.name}"></td>
+                    <td data-th="Price" th:text="${material.unitPrice}"></td>
+                    <td data-th="Date" th:text="${material.purchaseDate}"></td>
+                    <td data-th="Supplier" th:text="${material.supplier.getId()}"></td>
+                    <td data-th="Count" style="max-width: 300px">
+                        <div class="row">
+                            <div class="d-flex align-items-center" style="max-width: 125px">
+                                <form action="#"
+                                      th:action="@{/order/material/changeCount/{orderId}(orderId=${order.getId()})}"
+                                      th:method="post">
+                                    <div class="d-flex align-items-center">
+                                        <input th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" type="number" min="1" style="width:100px" th:name="count"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.countOfMaterials}">
+                                        <input type="number" hidden th:name="materialId"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.id}">
+                                        <input type="text" hidden th:name="page"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="'order'">
+                                        <button th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" style="margin-left: 50px"
+                                                class="btn btn-outline-success btn-md mb-2">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                                <form action="#"
+                                      th:action="@{/order/material/delete(orderId=${id})}"
+                                      th:method="post">
+                                    <div class="d-flex align-items-center">
+                                        <input  type="number" hidden min="1" style="width:80px" th:name="count"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.countOfMaterials}">
+                                        <input type="number" hidden th:name="materialId"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${material.id}">
+                                        <input type="text" hidden th:name="page"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="'materials/add'">
+                                        <button th:disabled="${order.orderStatus.COMPLETED == order.orderStatus || session.authUser != null}" style="margin-left: 2px"
+                                                class="btn btn-outline-danger btn-md mb-2">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

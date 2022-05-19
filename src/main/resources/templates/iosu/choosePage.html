@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queries</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center"> Choose query
+                    <div style="margin-left: 475px" class=" col-lg-3 control-label">
+                        <a th:href="@{/order/iosu/itogovy}" style="width: 100px; margin-top: 30px"
+                           class="btn btn-outline-primary">Itogovy</a>
+
+                        <a th:href="@{/order/iosu/perekrest}" style="width: 100px; margin-top: 30px"
+                           class="btn btn-outline-primary">Perekrest</a>
+
+                        <a th:href="@{/order/iosu/union}" style="width: 100px; margin-top: 30px"
+                           class="btn btn-outline-primary">Union</a>
+
+                        <a th:href="@{/order/iosu/uslovn}" style="width: 100px; margin-top: 30px"
+                           class="btn btn-outline-primary">Uslovn</a>
+
+                        <a th:href="@{/order/iosu/param}" style="width: 100px; margin-top: 30px"
+                           class="btn btn-outline-primary">Param</a>
+                    </div>
+                </h3>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

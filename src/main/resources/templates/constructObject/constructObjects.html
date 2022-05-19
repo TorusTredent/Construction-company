@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Objects</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <div class="row mt-3">
+        <div class="col-md-5">
+            <h1 class="page-header">Objects</h1>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Square</th>
+                    <th scope="col">Type</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="obj:${conObjects}">
+                    <form action="#"
+                          th:action="@{/object/update}" th:object="${saveObject}"
+                          th:method="post">
+                        <td data-th="Square" class="col-2 col-sm-1">
+                            <input type="number" th:name="square"
+                                   class="form-control form-control-lg text-left"
+                                   th:value="${obj.square}">
+                        </td>
+                        <td data-th="Type" class="сol-2 col-sm-1">
+                            <div class="row">
+                                <div class="d-flex align-items-center" style="max-width: 125px">
+
+                                    <div class="d-flex align-items-center">
+                                        <select th:name="type" th:value="${obj.constructObjectType}"
+                                                class="form-control"
+                                                style="max-width: 125px; min-width: 125px"
+                                                id="exampleFormControlSelect1">
+                                            <option th:text="${obj.constructObjectType}"></option>
+                                            <option th:each="type:${types}"
+                                                    th:if="${type != obj.getConstructObjectType()}"
+                                                    th:text="${type}"></option>
+                                        </select>
+                                        <input type="number" hidden th:name="id"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${obj.id}">
+                                        <button style="margin-left: 25px"
+                                                class="btn btn-outline-success btn-md mb-2">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </form>
+                    <td data-th="" class="сol-1 col-sm-1">
+                        <form action="#"
+                        th:action="@{/object/delete/}"
+                        th:method="post">
+                        <div class="d-flex align-items-center">
+                            <input type="number" hidden th:name="id"
+                                   class="form-control form-control-lg text-left"
+                                   th:value="${obj.id}">
+                            <button style="margin-left: 2px"
+                                    class="btn btn-outline-danger btn-md mb-2">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-left: 100px" class="col-md-6">
+            <h1 class="page-header">Create Construct_object: </h1>
+            <p th:if="${messageComplete != null}" class="alert alert-info alert-success" th:utext="${messageComplete}"
+               th:type="text"></p>
+            <p th:if="${objectIsAlreadyExist != null}" class="alert alert-info alert-danger"
+               th:utext="${objectIsAlreadyExist}"
+               th:type="text"></p>
+            <p th:if="${messageWarning != null}" class="alert alert-info alert-danger" th:utext="${messageWarning}"
+               th:type="text"></p>
+            <p th:if="${objectNotFount != null}" class="alert alert-info alert-danger" th:utext="${objectNotFount}"
+               th:type="text"></p>
+            <form action="#" th:action="@{/object/add}" th:object="${saveObject}" th:method="post">
+                <div class="forms-inputs mb-4"><span>Square: </span>
+                    <input class="form-control" style="max-width: 125px" th:field="*{square}" type="number">
+                </div>
+                <div class="form-text">
+                    <p th:if="${#fields.hasErrors('square')}" style="color: red" th:errors="*{square}"></p>
+                </div>
+                <div class="forms-inputs mb-4"><span>Square: </span>
+                    <select th:name="type" th:value="*{type}" class="form-control"
+                            style="max-width: 125px"
+                            id="exampleFormControlSelect2">
+                        <option th:each="type:${types}" th:text="${type}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" style="text-align: center; width: 150px">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center">Employees
+                    <form action="#" th:action="@{/employee/registration}" th:method="get">
+                        <button class="btn btn-outline-info" role="button"
+                                aria-pressed="true">Add employee
+                        </button>
+                    </form>
+                </h3>
+                <table class="table" th:if="${employees != null}">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">First_Name</th>
+                        <th scope="col">Last_Name</th>
+                        <th scope="col">Phone_Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Speciality</th>
+                        <th scope="col">Employee_Role</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="employee:${employees}">
+                    <tr>
+                        <td th:text="${employee.id}"></td>
+                        <td th:text="${employee.firstName}"></td>
+                        <td th:text="${employee.lastName}"></td>
+                        <td th:text="${employee.phoneNumber}"></td>
+                        <td th:text="${employee.email}"></td>
+                        <td th:text="${employee.speciality}"></td>
+                        <td th:text="${employee.employeeRole}"></td>
+                        <td >
+                            <form action="#"  th:action="@{/employee/selectedProfile/{id}(id = ${employee.getId()})}" th:method="get">
+                                <button class="btn btn-outline-secondary" role="button"
+                                        aria-pressed="true">Open
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="#" th:action="@{/employee/delete/{id}(id = ${employee.getId()})}" th:method="post">
+                                <button class="btn btn-outline-danger" role="button"
+                                        aria-pressed="true">Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

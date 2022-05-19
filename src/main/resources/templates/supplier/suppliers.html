@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Supplier</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h1 class="page-header">Suppliers</h1>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Rating</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sup:${suppliers}">
+                    <form action="#"
+                          th:action="@{/supplier/update}" th:object="${saveSupplier}"
+                          th:method="post">
+                        <td data-th="Name" class="col-2 col-sm-2">
+                            <input type="text" th:name="name"
+                                   class="form-control form-control-lg text-left"
+                                   th:value="${sup.name}">
+                        </td>
+                        <td data-th="Rating" class="сol-2 col-sm-1">
+                            <div class="row">
+                                <div class="d-flex align-items-center" style="max-width: 200px">
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" min="0" max="5" th:name="rating"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${sup.rating}">
+                                        <input type="number" hidden th:name="id"
+                                               class="form-control form-control-lg text-left"
+                                               th:value="${sup.id}">
+                                        <button style="margin-left: 25px"
+                                                class="btn btn-outline-success btn-md mb-2">
+                                            <i class="bi bi-arrow-clockwise"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </form>
+                    <td data-th="" style="max-width: 30px" class="сol-1 col-sm-1">
+                        <form  style="max-width: 50px" action="#"
+                              th:action="@{/supplier/delete/}"
+                              th:method="post">
+                            <div style="max-width: 50px" class="d-flex align-items-center">
+                                <input type="number" hidden th:name="id"
+                                       class="form-control form-control-lg text-left"
+                                       th:value="${sup.id}">
+                                <button style="margin-left: 2px"
+                                        class="btn btn-outline-danger btn-md mb-2">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-left: 100px" class="col-md-5">
+            <h1 class="page-header">Create Construct_object: </h1>
+            <p th:if="${messageComplete != null}" class="alert alert-info alert-success" th:utext="${messageComplete}"
+               th:type="text"></p>
+            <p th:if="${objectIsAlreadyExist != null}" class="alert alert-info alert-danger"
+               th:utext="${objectIsAlreadyExist}"
+               th:type="text"></p>
+            <p th:if="${messageWarning != null}" class="alert alert-info alert-danger" th:utext="${messageWarning}"
+               th:type="text"></p>
+            <p th:if="${objectNotFount != null}" class="alert alert-info alert-danger" th:utext="${objectNotFount}"
+               th:type="text"></p>
+            <form action="#" th:action="@{/supplier/add}" th:object="${saveSupplier}" th:method="post">
+                <div class="forms-inputs mb-4"><span>Name: </span>
+                    <input class="form-control" style="max-width: 200px" th:field="*{name}" type="text">
+                </div>
+                <div class="form-text">
+                    <p th:if="${#fields.hasErrors('name')}" style="color: red" th:errors="*{name}"></p>
+                </div>
+                <div class="forms-inputs mb-4"><span>Rating: </span>
+                    <input class="form-control" min="0" max="5" style="max-width: 125px" th:field="*{rating}" type="number">
+                </div>
+                <div class="form-text">
+                    <p th:if="${#fields.hasErrors('rating')}" style="color: red" th:errors="*{rating}"></p>
+                </div>
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" style="text-align: center; width: 150px">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

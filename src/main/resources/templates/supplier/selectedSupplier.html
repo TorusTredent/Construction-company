@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Selected Supplier</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<div class="container" style="padding-top: 60px;">
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <h1 class="page-header">Materials</h1>
+            <table class="table" th:if="${materials != null}">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Unit_price</th>
+                    <th scope="col">Purchase_Date</th>
+                    <th scope="col">Supplier_Name</th>
+                    <th scope="col">Count</th>
+                </tr>
+                </thead>
+                <tbody th:each="material:${materials}">
+                <td th:text="${material.id}"></td>
+                <td th:text="${material.name}"></td>
+                <td th:text="${material.unitPrice}"></td>
+                <td th:text="${material.purchaseDate}"></td>
+                <td th:text="${material.supplier.name}"></td>
+                <td th:text="${material.countOfMaterials}"></td>
+                </td>
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-left: 100px" class="col-md-5">
+            <h1 class="page-header">Construct_object: </h1>
+            <form action="#" th:action="@{/supplier/update}" th:object="${saveSupplier}" th:method="post">
+                <div class="forms-inputs mb-4"><span>Name: </span>
+                    <input class="form-control" style="max-width: 200px" th:name="name" th:value="${supplier.name}"
+                           type="text">
+                </div>
+                <div class="form-text">
+                    <p th:if="${#fields.hasErrors('name')}" style="color: red" th:errors="*{name}"></p>
+                </div>
+                <input class="form-control" hidden style="max-width: 200px" th:name="id" th:value="${supplier.id}"
+                       type="number">
+                <div class="forms-inputs mb-4"><span>Rating: </span>
+                    <input class="form-control" min="0" max="5" style="max-width: 125px" th:name="rating"
+                           th:value="${supplier.rating}" type="number">
+                </div>
+
+                <div class="form-text">
+                    <p th:if="${#fields.hasErrors('rating')}" style="color: red" th:errors="*{rating}"></p>
+                </div>
+                <input class="form-control"  style="max-width: 125px" hidden th:name="count"
+                       th:value="-1" type="number">
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary" style="text-align: center; width: 150px">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

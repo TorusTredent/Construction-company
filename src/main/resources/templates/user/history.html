@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>History</title>
+</head>
+<body>
+<div th:replace="_header :: content"></div>
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row w-100">
+            <div class="col-lg-12 col-md-12 col-12">
+                <h3 class="display-5 mb-2 text-center">Orders
+                    <form action="#" th:action="@{/user/add/order}" th:method="get">
+                        <button class="btn btn-outline-info" role="button"
+                                aria-pressed="true">Add order
+                        </button>
+                    </form>
+                </h3>
+                <table class="table" th:if="${orders != null}">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">BeginDate</th>
+                        <th scope="col">EndDate</th>
+                        <th scope="col">BrigadeNumber</th>
+                        <th scope="col">User</th>
+                        <th scope="col">ConstructObject</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="order:${orders}">
+                    <tr>
+                        <td th:text="${order.id}"></td>
+                        <td th:text="${order.address}"></td>
+                        <td th:text="${order.beginningOfWork}"></td>
+                        <td th:text="${order.endOfWork}"></td>
+                        <td>
+                            <a th:href="@{/brigade/{id}(id = ${order.brigade.getId()})}"
+                               th:text="${order.brigade.getId()}"></a>
+                        </td>
+                        <td>
+                            <a th:href="@{/user/profile/{id}(id = ${order.user.getId()})}"
+                               th:text="${order.user.getId()}"></a>
+                        </td>
+                        <td th:text="${order.constructObject.constructObjectType + ' - ' + order.constructObject.square}">
+
+                        </td>
+                        <td th:text="${order.orderStatus}"></td>
+                        <td>
+                            <form action="#" th:action="@{/order/{id}(id = ${order.getId()})}" th:method="get">
+                                <button class="btn btn-outline-secondary" role="button"
+                                        aria-pressed="true">Open
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
